@@ -1,0 +1,4 @@
+**/__pycache__/
+*.py.swo
+/media/
+/sistema_instituto/settings.py
