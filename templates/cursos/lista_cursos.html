@@ -73,7 +73,7 @@
                         <td>S/. {{ curso.precio }}</td>
                         <td>
                             <span class="badge {% if curso.cupos_disponibles > 0 %}bg-success{% else %}bg-danger{% endif %}">
-                                {{ curso.alumnos_inscritos }}/{{ curso.cupo_maximo }}
+                                {% comment %} {{ curso.alumnos_inscritos }}/{{ curso.cupo_maximo }} {% endcomment %}
                             </span>
                         </td>
                         <td>
