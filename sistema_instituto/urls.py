@@ -19,7 +19,9 @@ urlpatterns = [
     # Incluir URLs de las apps
     path('alumnos/', include('alumnos.urls')),
     path('cursos/', include('cursos.urls')),
-    # path('matriculas/', include('matriculas.urls')),
+    path('matriculas/', include('matriculas.urls')),
+    path('auth/', include('auth_app.urls'))
+
 ]
 
 # Servir archivos estáticos en desarrollo

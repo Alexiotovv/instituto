@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+
 
 def home(request):
     return render(request, 'home.html')
@@ -49,3 +53,41 @@ def register(request):
 @login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
+
+@login_required
+def profile(request):
+    return render(request, 'auth_app/profile.html', {'user': request.user})
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        # Aquí puedes agregar un formulario personalizado para editar perfil
+        user = request.user
+        user.email = request.POST.get('email', user.email)
+        user.first_name = request.POST.get('first_name', user.first_name)
+        user.last_name = request.POST.get('last_name', user.last_name)
+        user.save()
+        messages.success(request, 'Perfil actualizado correctamente!')
+        return redirect('auth_app:profile')
+    
+    return render(request, 'auth_app/edit_profile.html')
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Contraseña actualizada correctamente!')
+            return redirect('auth_app:profile')
+        else:
+            messages.error(request, 'Por favor corrige los errores.')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'auth_app/change_password.html', {'form': form})
+
+
+
+
