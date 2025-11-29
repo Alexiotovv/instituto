@@ -128,7 +128,8 @@
                         </p>
                     </div>
                 </div>
-                <a href="{% url 'alumnos:detalle_alumno' matricula.alumno.id %}" class="btn btn-outline-primary btn-sm">
+                {% comment %} <a href="{% url 'alumnos:detalle_alumno' matricula.alumno.id %}" class="btn btn-outline-primary btn-sm"> {% endcomment %}
+                <a href="" class="btn btn-outline-primary btn-sm">
                     <i class="fas fa-external-link-alt"></i> Ver Alumno
                 </a>
             </div>
@@ -165,14 +166,14 @@
                     <strong>Cupos:</strong>
                     <div class="progress mt-1">
                         <div class="progress-bar 
-                            {% if matricula.curso.cupos_disponibles > 0 %}bg-success{% else %}bg-danger{% endif %}" 
+                            {% comment %} {% if matricula.curso.cupos_disponibles > 0 %}bg-success{% else %}bg-danger{% endif %}" 
                             style="width: {{ matricula.curso.alumnos_inscritos|divisible:matricula.curso.cupo_maximo|multiply:100 }}%">
-                            {{ matricula.curso.alumnos_inscritos }}/{{ matricula.curso.cupo_maximo }}
+                            {{ matricula.curso.alumnos_inscritos }}/{{ matricula.curso.cupo_maximo }} {% endcomment %}
                         </div>
                     </div>
                 </div>
-                
-                <a href="{% url 'cursos:detalle_curso' matricula.curso.id %}" class="btn btn-outline-success btn-sm mt-2">
+                {% comment %} <a href="{% url 'cursos:detalle_curso' matricula.curso.id %}" class="btn btn-outline-success btn-sm mt-2"> {% endcomment %}
+                <a href="" class="btn btn-outline-success btn-sm mt-2">
                     <i class="fas fa-external-link-alt"></i> Ver Curso
                 </a>
             </div>

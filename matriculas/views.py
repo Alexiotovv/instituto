@@ -141,4 +141,6 @@ def historial_matriculas(request):
     }
     return render(request, 'matriculas/historial_matriculas.html', context)
     
-    
+@login_required
+def reporte_matriculas(request):
+    pass
