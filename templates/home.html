@@ -13,7 +13,7 @@
             </div>
         {% else %}
             <div class="mt-4">
-                <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">Iniciar Sesión</a>
+                {% comment %} <a href="{% url 'login' %}" class="btn btn-primary btn-lg me-3">Iniciar Sesión</a> {% endcomment %}
                 <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg">Registrarse</a>
             </div>
         {% endif %}

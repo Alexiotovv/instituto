@@ -96,23 +96,20 @@
             </div>
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3">
-                    {% if matricula.alumno and matricula.alumno.foto %}
+                    {% if matricula.alumno.foto %}
                         <img src="{{ matricula.alumno.foto.url }}" alt="{{ matricula.alumno.nombre_completo }}" 
-                            class="rounded-circle" width="40" height="40">
+                             class="rounded-circle me-3" width="60" height="60">
                     {% else %}
-                        <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" 
-                            style="width: 40px; height: 40px;">
-                            <i class="fas fa-user text-white"></i>
+                        <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                             style="width: 60px; height: 60px;">
+                            <i class="fas fa-user text-white fa-2x"></i>
                         </div>
                     {% endif %}
                     <div>
-                        {% if matricula.alumno %}
-                            <strong>{{ matricula.alumno.nombre_completo }}</strong>
-                            <br>
-                            <small class="text-muted">{{ matricula.alumno.dni }}</small>
-                        {% else %}
-                            <strong class="text-danger">Alumno no encontrado</strong>
-                        {% endif %}
+                        <h6 class="mb-1">{{ matricula.alumno.nombre_completo }}</h6>
+                        <p class="text-muted mb-0">
+                            {{ matricula.alumno.codigo_alumno }} | {{ matricula.alumno.dni }}
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -131,8 +128,7 @@
                         </p>
                     </div>
                 </div>
-                {% comment %} <a href="{% url 'alumnos:detalle_alumno' matricula.alumno.id %}" class="btn btn-outline-primary btn-sm"> {% endcomment %}
-                <a href="" class="btn btn-outline-primary btn-sm">
+                <a href="{% url 'alumnos:detalle_alumno' matricula.alumno.id %}" class="btn btn-outline-primary btn-sm">
                     <i class="fas fa-external-link-alt"></i> Ver Alumno
                 </a>
             </div>
@@ -169,14 +165,14 @@
                     <strong>Cupos:</strong>
                     <div class="progress mt-1">
                         <div class="progress-bar 
-                            {% comment %} {% if matricula.curso.cupos_disponibles > 0 %}bg-success{% else %}bg-danger{% endif %}" 
+                            {% if matricula.curso.cupos_disponibles > 0 %}bg-success{% else %}bg-danger{% endif %}" 
                             style="width: {{ matricula.curso.alumnos_inscritos|divisible:matricula.curso.cupo_maximo|multiply:100 }}%">
-                            {{ matricula.curso.alumnos_inscritos }}/{{ matricula.curso.cupo_maximo }} {% endcomment %}
+                            {{ matricula.curso.alumnos_inscritos }}/{{ matricula.curso.cupo_maximo }}
                         </div>
                     </div>
                 </div>
-                {% comment %} <a href="{% url 'cursos:detalle_curso' matricula.curso.id %}" class="btn btn-outline-success btn-sm mt-2"> {% endcomment %}
-                <a href="" class="btn btn-outline-success btn-sm mt-2">
+                
+                <a href="{% url 'cursos:detalle_curso' matricula.curso.id %}" class="btn btn-outline-success btn-sm mt-2">
                     <i class="fas fa-external-link-alt"></i> Ver Curso
                 </a>
             </div>

@@ -7,6 +7,7 @@ from .forms import MatriculaForm
 
 @login_required
 def lista_matriculas(request):
+    
     """Lista todas las matrículas con filtros y búsqueda"""
     matriculas = Matricula.objects.select_related('alumno', 'curso').all()
     
@@ -30,11 +31,22 @@ def lista_matriculas(request):
             Q(curso__codigo__icontains=query)
         )
     
+    # Obtener cursos para el filtro
+    from cursos.models import Curso
+    cursos = Curso.objects.all()
+    
+    # Estadísticas
+    total_matriculas = matriculas.count()
+    matriculas_activas = matriculas.filter(estado='A').count()
+    matriculas_pendientes = matriculas.filter(estado='P').count()
+    
     context = {
         'matriculas': matriculas,
+        'cursos': cursos,  # Agregar cursos al contexto
         'titulo': 'Lista de Matrículas',
-        'total_matriculas': matriculas.count(),
-        'matriculas_activas': matriculas.filter(estado='A').count(),
+        'total_matriculas': total_matriculas,
+        'matriculas_activas': matriculas_activas,
+        'matriculas_pendientes': matriculas_pendientes,
     }
     return render(request, 'matriculas/lista_matriculas.html', context)
 
@@ -140,7 +152,7 @@ def historial_matriculas(request):
         'titulo': 'Historial de Matrículas'
     }
     return render(request, 'matriculas/historial_matriculas.html', context)
-    
+
 @login_required
 def reporte_matriculas(request):
     pass

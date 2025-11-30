@@ -136,3 +136,70 @@ def buscar_alumnos(request):
         'titulo': 'Búsqueda de Alumnos'
     }
     return render(request, 'alumnos/buscar_alumnos.html', context)
+
+@login_required
+def reporte_alumnos(request):
+    """Genera reportes de alumnos con filtros avanzados"""
+    alumnos = Alumno.objects.all()
+    
+    # Filtros del reporte
+    estado = request.GET.get('estado')
+    genero = request.GET.get('genero')
+    fecha_ingreso_desde = request.GET.get('fecha_ingreso_desde')
+    fecha_ingreso_hasta = request.GET.get('fecha_ingreso_hasta')
+    
+    # Aplicar filtros
+    if estado:
+        alumnos = alumnos.filter(estado=estado)
+    if genero:
+        alumnos = alumnos.filter(genero=genero)
+    if fecha_ingreso_desde:
+        alumnos = alumnos.filter(fecha_ingreso__gte=fecha_ingreso_desde)
+    if fecha_ingreso_hasta:
+        alumnos = alumnos.filter(fecha_ingreso__lte=fecha_ingreso_hasta)
+    
+    # Estadísticas
+    total_alumnos = alumnos.count()
+    alumnos_activos = alumnos.filter(estado='A').count()
+    alumnos_inactivos = alumnos.filter(estado='I').count()
+    alumnos_egresados = alumnos.filter(estado='E').count()
+    alumnos_retirados = alumnos.filter(estado='R').count()
+    
+    # Distribución por género
+    masculinos = alumnos.filter(genero='M').count()
+    femeninos = alumnos.filter(genero='F').count()
+    otros = alumnos.filter(genero='O').count()
+    
+    # Distribución por edad
+    from datetime import date
+    hoy = date.today()
+    
+    menores_18 = alumnos.filter(fecha_nacimiento__gte=date(hoy.year-18, hoy.month, hoy.day)).count()
+    entre_18_25 = alumnos.filter(
+        fecha_nacimiento__lt=date(hoy.year-18, hoy.month, hoy.day),
+        fecha_nacimiento__gte=date(hoy.year-25, hoy.month, hoy.day)
+    ).count()
+    entre_26_35 = alumnos.filter(
+        fecha_nacimiento__lt=date(hoy.year-25, hoy.month, hoy.day),
+        fecha_nacimiento__gte=date(hoy.year-35, hoy.month, hoy.day)
+    ).count()
+    mayores_35 = alumnos.filter(fecha_nacimiento__lt=date(hoy.year-35, hoy.month, hoy.day)).count()
+    
+    context = {
+        'alumnos': alumnos,
+        'titulo': 'Reporte de Alumnos',
+        'total_alumnos': total_alumnos,
+        'alumnos_activos': alumnos_activos,
+        'alumnos_inactivos': alumnos_inactivos,
+        'alumnos_egresados': alumnos_egresados,
+        'alumnos_retirados': alumnos_retirados,
+        'masculinos': masculinos,
+        'femeninos': femeninos,
+        'otros': otros,
+        'menores_18': menores_18,
+        'entre_18_25': entre_18_25,
+        'entre_26_35': entre_26_35,
+        'mayores_35': mayores_35,
+        'filtros_aplicados': any([estado, genero, fecha_ingreso_desde, fecha_ingreso_hasta])
+    }
+    return render(request, 'alumnos/reporte_alumnos.html', context)
