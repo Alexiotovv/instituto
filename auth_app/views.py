@@ -58,7 +58,7 @@ def register(request):
         from .forms import CustomUserCreationForm
         form = CustomUserCreationForm()
     
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
 @login_required
 def dashboard(request):
