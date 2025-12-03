@@ -1,0 +1,58 @@
+--- Folder Layout ---
+[.git] (...)
+.gitignore
+[alumnos]
+    ├── admin.py
+    ├── apps.py
+    ├── forms.py
+    ├── [fotos]
+        ├── foto1.png
+        ├── foto1_qQfYhoy.png
+        └── get-to-know-the-quistococha-tourist-complex-a-white-sand-beach-in-the-jungle-556.jpg
+    ├── [migrations] (...)
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    ├── views.py
+    └── __init__.py
+[auth_app]
+    ├── admin.py
+    ├── apps.py
+    ├── forms.py
+    ├── [migrations] (...)
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    ├── views.py
+    └── __init__.py
+[cursos]
+    ├── admin.py
+    ├── apps.py
+    ├── forms.py
+    ├── [migrations] (...)
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    ├── views.py
+    └── __init__.py
+db.sqlite3
+manage.py
+[matriculas]
+    ├── admin.py
+    ├── apps.py
+    ├── forms.py
+    ├── [migrations] (...)
+    ├── models.py
+    ├── tests.py
+    ├── urls.py
+    ├── views.py
+    └── __init__.py
+requirements.txt
+[sistema_instituto]
+    ├── asgi.py
+    ├── settings.py
+    ├── urls.py
+    ├── wsgi.py
+    └── __init__.py
+[templates] (...)
+[venv] (...)

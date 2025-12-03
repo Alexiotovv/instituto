@@ -13,8 +13,8 @@ urlpatterns = [
     path('<int:matricula_id>/editar/', views.editar_matricula, name='editar_matricula'),
     path('<int:matricula_id>/eliminar/', views.eliminar_matricula, name='eliminar_matricula'),
     
-    # Procesos específicos
-    path('procesar/', views.procesar_matricula, name='procesar_matricula'),
+    # Procesos específicos - CORREGIDO
+    path('<int:matricula_id>/procesar/', views.procesar_matricula, name='procesar_matricula'),
     path('historial/', views.historial_matriculas, name='historial_matriculas'),
     path('reporte/', views.reporte_matriculas, name='reporte_matriculas'),
 ]

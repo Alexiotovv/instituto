@@ -2,23 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from datetime import date
 from .models import Matricula
 from .forms import MatriculaForm
+from cursos.models import Curso
 
 @login_required
 def lista_matriculas(request):
-    
     """Lista todas las matrículas con filtros y búsqueda"""
     matriculas = Matricula.objects.select_related('alumno', 'curso').all()
-    
-    # Filtros
-    estado = request.GET.get('estado')
-    curso_id = request.GET.get('curso')
-    
-    if estado:
-        matriculas = matriculas.filter(estado=estado)
-    if curso_id:
-        matriculas = matriculas.filter(curso_id=curso_id)
     
     # Búsqueda
     query = request.GET.get('q')
@@ -31,25 +23,53 @@ def lista_matriculas(request):
             Q(curso__codigo__icontains=query)
         )
     
+    # Filtros
+    estado = request.GET.get('estado')
+    curso_id = request.GET.get('curso')
+    
+    if estado:
+        matriculas = matriculas.filter(estado=estado)
+    if curso_id:
+        matriculas = matriculas.filter(curso_id=curso_id)
+    
+    # Ordenamiento
+    orden = request.GET.get('orden', '-fecha_matricula')
+    matriculas = matriculas.order_by(orden)
+    
     # Obtener cursos para el filtro
-    from cursos.models import Curso
     cursos = Curso.objects.all()
     
-    # Estadísticas
+    # Estadísticas MEJORADAS
     total_matriculas = matriculas.count()
     matriculas_activas = matriculas.filter(estado='A').count()
     matriculas_pendientes = matriculas.filter(estado='P').count()
+    matriculas_completadas = matriculas.filter(estado='C').count()
+    matriculas_retiradas = matriculas.filter(estado='R').count()
+    matriculas_canceladas = matriculas.filter(estado='X').count()
+    
+    # Matrículas de hoy
+    hoy = date.today()
+    matriculas_hoy = matriculas.filter(fecha_matricula=hoy).count()
     
     context = {
         'matriculas': matriculas,
-        'cursos': cursos,  # Agregar cursos al contexto
+        'cursos': cursos,
         'titulo': 'Lista de Matrículas',
         'total_matriculas': total_matriculas,
         'matriculas_activas': matriculas_activas,
         'matriculas_pendientes': matriculas_pendientes,
+        'matriculas_completadas': matriculas_completadas,
+        'matriculas_retiradas': matriculas_retiradas,
+        'matriculas_canceladas': matriculas_canceladas,
+        'matriculas_hoy': matriculas_hoy,
+        'estado_seleccionado': estado,
+        'curso_seleccionado': curso_id,
+        'query': query,
+        'orden_seleccionado': orden,
     }
     return render(request, 'matriculas/lista_matriculas.html', context)
 
+# Las otras funciones quedan EXACTAMENTE IGUAL como las tenías:
 @login_required
 def detalle_matricula(request, matricula_id):
     """Muestra los detalles de una matrícula específica"""
